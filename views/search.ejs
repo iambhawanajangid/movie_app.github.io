@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Search</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Search for Movies or TV Shows</h1>
+    <form action="/search" method="POST" class="mb-4">
+      <div class="input-group">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Enter movie title" required>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+
+    <% if (movies && movies.length > 0) { %>
+      <div class="row">
+        <% movies.forEach(movie => { %>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="<%= movie.Poster %>" class="card-img-top" alt="<%= movie.Title %> Poster">
+              <div class="card-body">
+                <h5 class="card-title"><%= movie.Title %></h5>
+                <p class="card-text">Year: <%= movie.Year %></p>
+                <p class="card-text">Type: <%= movie.Type %></p>
+                <form action="/favourite" method="POST">
+                  <input type="hidden" name="title" value="<%= movie.Title %>">
+                  <input type="hidden" name="year" value="<%= movie.Year %>">
+                  <input type="hidden" name="type" value="<%= movie.Type %>">
+                  <input type="hidden" name="poster" value="<%= movie.Poster %>">
+                  <button type="submit" class="btn btn-success">Add to Favourite</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p><%= movies ? "No movies found. Please try another search term." : "Please enter a search term." %></p>
+    <% } %>
+    
+    <a href="/favourites" class="btn btn-info mt-4">Go to Favourites</a>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
